@@ -103,14 +103,15 @@
             </select>
         </div>
         <div>
-            <label>Children (< 18)</label>
-            <select id="children" onchange="calculate()">
+            <label>Children (&lt; 4)</label>
+<select id="children" onchange="calculate()">
     <option value="0">0</option>
     <option value="1">1</option>
     <option value="2">2</option>
     <option value="3">3</option>
     <option value="4">4</option>
 </select>
+
 
         </div>
     </div>
@@ -251,7 +252,9 @@
             pay = rates.base[rounded];
             if (rounded >= 30) {
                 const isMarried = document.getElementById('status').value === 'spouse';
-                const kids = parseInt(document.getElementById('children').value) || 0;
+                let kids = parseInt(document.getElementById('children').value) || 0;
+kids = Math.min(kids, 4);
+
                 if (isMarried) pay += rates.spouse[rounded];
                 if (kids > 0) pay += (kids * rates.child[rounded]);
             }
