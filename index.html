@@ -42,4 +42,69 @@ select{padding:8px;width:100%}
 <div id="monthlyPay">$0.00 / mo</div>
 </div>
 
-<
+<div class="settings">
+<div>
+<label>Marital Status</label>
+<select id="status" onchange="calculate()">
+<option value="single">Veteran Alone</option>
+<option value="spouse">Married</option>
+</select>
+</div>
+
+<div>
+<label>Children (Under 18)</label>
+<select id="kidsU18" onchange="calculate()">
+<option>0</option><option>1</option><option>2</option><option>3</option><option>4</option>
+</select>
+</div>
+
+<div>
+<label>Children (18–23, School)</label>
+<select id="kidsSchool" onchange="calculate()">
+<option>0</option><option>1</option><option>2</option><option>3</option>
+</select>
+</div>
+
+<div>
+<label>Dependent Parents</label>
+<select id="parents" onchange="calculate()">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+</select>
+</div>
+</div>
+
+</div>
+
+<script>
+const basePay = {
+10:180.42,20:356.66,30:552.47,40:795.84,50:1132.90,
+60:1435.02,70:1808.45,80:2102.15,90:2362.30,100:3938.58
+};
+
+const dependents = {
+spouse:{30:65,40:87,50:109,60:131,70:153,80:175,90:197,100:219.59},
+child:{30:44,40:58,50:73,60:88,70:102,80:117,90:132,100:146.85},
+school:{30:141,40:189,50:237,60:284,70:331,80:378,90:426,100:473},
+parent:{30:64,40:86,50:108,60:130,70:152,80:174,90:196,100:218}
+};
+
+function calculate(){
+let rating=parseInt(document.getElementById("finalRating").innerText)||0;
+let pay=basePay[rating]||0;
+
+if(rating>=30){
+if(document.getElementById("status").value==="spouse") pay+=dependents.spouse[rating];
+pay+=dependents.child[rating]*parseInt(kidsU18.value);
+pay+=dependents.school[rating]*parseInt(kidsSchool.value);
+pay+=dependents.parent[rating]*parseInt(parents.value);
+}
+
+document.getElementById("monthlyPay").innerText=
+"$"+pay.toLocaleString("en-US",{minimumFractionDigits:2})+" / mo";
+}
+</script>
+
+</body>
+</html>
